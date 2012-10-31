@@ -1,0 +1,6 @@
+lib/Mojolicious/Plugin/CHI.pm
+t/CHI.t
+Changes
+MANIFEST
+LICENSE
+Makefile.PL
