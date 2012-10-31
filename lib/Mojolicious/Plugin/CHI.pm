@@ -85,6 +85,7 @@ Mojolicious::Plugin::CHI - Use CHI caches within Mojolicious
 
 =head1 SYNOPSIS
 
+  # Mojolicious
   $app->plugin(CHI => {
     MyCache => {
       driver     => 'FastMmap',
@@ -93,19 +94,15 @@ Mojolicious::Plugin::CHI - Use CHI caches within Mojolicious
     }
   );
 
-  # Or in your config file
-  {
-    CHI => {
-      default => {
-        driver => 'Memory',
-        global => 1
-      }
-    }
-  }
+  # Mojolicious::Lite
+  plugin 'CHI' => {
+    default => { driver => 'Memory', global => 1 }
+  };
 
   $c->chi('MyCache')->set(my_key => 'This is my value');
   print $c->chi('MyCache')->get('my_key');
 
+  # Using the default cache
   $c->chi->set(from_memory => 'With love!');
   print $c->chi->get('from_memory');
 
@@ -137,6 +134,16 @@ L<CHI> caches within Mojolicious.
   plugin 'CHI' => {
     default => { driver => 'Memory', global => 1 }
   };
+
+  # Or in your config file
+  {
+    CHI => {
+      default => {
+        driver => 'Memory',
+        global => 1
+      }
+    }
+  }
 
 Called when registering the plugin.
 On creation, the plugin accepts a hash of cache names
