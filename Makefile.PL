@@ -11,7 +11,6 @@ WriteMakefile(
   PREREQ_PM => {
     'Mojolicious' => 3.43,
     'Test::More' => 0,
-    Carp => 0,
     CHI => 0
   },
   LICENSE      => 'perl',

@@ -1,13 +1,10 @@
 package Mojolicious::Plugin::CHI;
 use Mojo::Base 'Mojolicious::Plugin';
-use Carp qw/carp croak/;
+use CHI;
 
 
 our $VERSION = '0.01';
 
-
-# Cache driver
-use CHI;
 
 # Register Plugin
 sub register {
@@ -39,6 +36,7 @@ sub register {
   Mojo::IOLoop->timer(
     0 => sub {
 
+      # Loop through all caches
       foreach my $name (keys %$param) {
 	my $cache_param = $param->{$name};
 
@@ -49,7 +47,7 @@ sub register {
 	my $cache = CHI->new( %$cache_param );
 
 	# No succesful creation
-	croak "Unable to create cache handle '$name'" unless $cache;
+	$mojo->log->warn("Unable to create cache handle '$name'") unless $cache;
 
 	# Store database handle
 	$caches->{$name} = $cache;
@@ -65,7 +63,7 @@ sub register {
       my $cache = $caches->{$name};
 
       # Database unknown
-      carp "Unknown cache handle '$name'" unless $cache;
+      $mojo->log->warn("Unknown cache handle '$name'") unless $cache;
 
       # Return cache
       return $cache;
@@ -96,9 +94,13 @@ Mojolicious::Plugin::CHI - Use CHI caches within Mojolicious
 
   # Mojolicious::Lite
   plugin 'CHI' => {
-    default => { driver => 'Memory', global => 1 }
+    default => {
+      driver => 'Memory',
+      global => 1
+    }
   };
 
+  # In Controllers:
   $c->chi('MyCache')->set(my_key => 'This is my value');
   print $c->chi('MyCache')->get('my_key');
 
@@ -147,7 +149,7 @@ L<CHI> caches within Mojolicious.
 
 Called when registering the plugin.
 On creation, the plugin accepts a hash of cache names
-associated with a L<CHI> object.
+associated with L<CHI> objects.
 All parameters can be set either on registration or
 as part of the configuration file with the key C<CHI>.
 
@@ -160,7 +162,6 @@ as part of the configuration file with the key C<CHI>.
   $c->chi('MyCache')->set(my_key => 'This is my value', '10 min');
   print $c->chi('MyCache')->get('my_key');
   print $c->chi->get('from_default_cache');
-
 
 Returns a L<CHI> handle if registered.
 Accepts the name of the registered cache.
