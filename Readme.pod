@@ -18,9 +18,13 @@ Mojolicious::Plugin::CHI - Use CHI caches within Mojolicious
 
   # Mojolicious::Lite
   plugin 'CHI' => {
-    default => { driver => 'Memory', global => 1 }
+    default => {
+      driver => 'Memory',
+      global => 1
+    }
   };
 
+  # In Controllers:
   $c->chi('MyCache')->set(my_key => 'This is my value');
   print $c->chi('MyCache')->get('my_key');
 
@@ -69,7 +73,7 @@ L<CHI> caches within Mojolicious.
 
 Called when registering the plugin.
 On creation, the plugin accepts a hash of cache names
-associated with a L<CHI> object.
+associated with L<CHI> objects.
 All parameters can be set either on registration or
 as part of the configuration file with the key C<CHI>.
 
@@ -83,7 +87,6 @@ as part of the configuration file with the key C<CHI>.
   print $c->chi('MyCache')->get('my_key');
   print $c->chi->get('from_default_cache');
 
-
 Returns a L<CHI> handle if registered.
 Accepts the name of the registered cache.
 If no cache handle name is given, a cache handle name
@@ -93,7 +96,6 @@ C<default> is assumed.
 =head1 DEPENDENCIES
 
 L<Mojolicious>,
-L<Carp>,
 L<CHI>.
 
 B<Note:> L<CHI> has a lot of dependencies. It is
