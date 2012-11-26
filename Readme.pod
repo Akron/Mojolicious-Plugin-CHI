@@ -55,7 +55,8 @@ L<CHI> caches within Mojolicious.
     default => {
       driver => 'Memory',
       global => 1
-    }
+    },
+    namespaces => 1
   });
 
   # Mojolicious::Lite
@@ -76,8 +77,17 @@ L<CHI> caches within Mojolicious.
 Called when registering the plugin.
 On creation, the plugin accepts a hash of cache names
 associated with L<CHI> objects.
+
+In addition to that, you can set the C<namespaces> parameter
+to a true value.
+In this case, the cache handle name will also be set as the
+namespace of the C<CHI> object.
+
 All parameters can be set either on registration or
 as part of the configuration file with the key C<CHI>.
+
+B<Note:> By default, you have to set the namespace of your
+cache manually. This will change in further releases.
 
 
 =head1 HELPERS

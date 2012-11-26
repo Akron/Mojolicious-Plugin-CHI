@@ -1,5 +1,6 @@
 lib/Mojolicious/Plugin/CHI.pm
 t/CHI.t
+t/CHI-File.t
 Changes
 MANIFEST
 LICENSE

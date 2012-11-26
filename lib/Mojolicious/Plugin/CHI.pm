@@ -2,7 +2,7 @@ package Mojolicious::Plugin::CHI;
 use Mojo::Base 'Mojolicious::Plugin';
 use CHI;
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 # Register Plugin
 sub register {
@@ -30,6 +30,9 @@ sub register {
     $caches = $mojo->chi_handles;
   };
 
+  # Temporary: Support namespaces
+  my $ns = delete $param->{namespaces};
+
   # Init caches (on fork)
   Mojo::IOLoop->timer(
     0 => sub {
@@ -40,6 +43,11 @@ sub register {
 
 	# Already exists
 	next if exists $caches->{$name};
+
+	# Set namespace
+	if ($ns) {
+	  $cache_param->{namespace} //= $name unless $name eq 'default';
+	};
 
 	# Get Database handle
 	my $cache = CHI->new( %$cache_param );
@@ -134,7 +142,8 @@ L<CHI> caches within Mojolicious.
     default => {
       driver => 'Memory',
       global => 1
-    }
+    },
+    namespaces => 1
   });
 
   # Mojolicious::Lite
@@ -155,8 +164,18 @@ L<CHI> caches within Mojolicious.
 Called when registering the plugin.
 On creation, the plugin accepts a hash of cache names
 associated with L<CHI> objects.
+
+In addition to that, you can set the C<namespaces> parameter
+to a true value.
+In this case, the cache handle name will also be set as the
+namespace of the C<CHI> object.
+
 All parameters can be set either on registration or
 as part of the configuration file with the key C<CHI>.
+
+B<Note:> By default, the C<namespaces> flag is deactivated
+and you have to set the namespace of your
+cache manually. This will change in further releases.
 
 
 =head1 HELPERS
