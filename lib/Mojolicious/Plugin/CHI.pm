@@ -2,7 +2,7 @@ package Mojolicious::Plugin::CHI;
 use Mojo::Base 'Mojolicious::Plugin';
 use CHI;
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 # Register Plugin
 sub register {
@@ -78,6 +78,7 @@ sub register {
 __END__
 
 =pod
+=encoding utf8
 
 =head1 NAME
 
@@ -180,6 +181,11 @@ L<CHI>.
 B<Note:> L<CHI> has a lot of dependencies. It is
 thus not recommended to use this plugin in a CGI
 environment.
+
+
+=head1 CONTRIBUTORS
+
+Boris Däppen (borisdaeppen)
 
 
 =head1 AVAILABILITY
