@@ -77,7 +77,6 @@ L<CHI> caches within Mojolicious.
 Called when registering the plugin.
 On creation, the plugin accepts a hash of cache names
 associated with L<CHI> objects.
-
 In addition to that, you can make all cache handles
 qualified L<CHI> namespaces by setting the C<namespaces> parameter
 to a true value.
