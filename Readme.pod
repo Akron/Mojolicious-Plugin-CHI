@@ -86,7 +86,8 @@ namespace of the C<CHI> object.
 All parameters can be set either on registration or
 as part of the configuration file with the key C<CHI>.
 
-B<Note:> By default, you have to set the namespace of your
+B<Note:> By default, the C<namespaces> flag is deactivated
+and you have to set the namespace of your
 cache manually. This will change in further releases.
 
 
