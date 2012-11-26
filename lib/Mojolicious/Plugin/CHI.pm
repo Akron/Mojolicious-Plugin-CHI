@@ -30,7 +30,7 @@ sub register {
     $caches = $mojo->chi_handles;
   };
 
-  # Temporary: Support namespaces
+  # Support namespaces
   my $ns = delete $param->{namespaces};
 
   # Init caches (on fork)
@@ -165,17 +165,18 @@ Called when registering the plugin.
 On creation, the plugin accepts a hash of cache names
 associated with L<CHI> objects.
 
-In addition to that, you can set the C<namespaces> parameter
+In addition to that, you can make all cache handles
+qualified L<CHI> namespaces by setting the C<namespaces> parameter
 to a true value.
-In this case, the cache handle name will also be set as the
-namespace of the C<CHI> object.
 
 All parameters can be set either on registration or
 as part of the configuration file with the key C<CHI>.
 
-B<Note:> By default, the C<namespaces> flag is deactivated
-and you have to set the namespace of your
-cache manually. This will change in further releases.
+B<Note:> Currently, the C<namespaces> flag is off by default
+and cache handles are independent from namespaces.
+This will change in an upcoming release.
+To prevent cache rebuilding in the future, set C<namespaces>
+to a true value.
 
 
 =head1 HELPERS
