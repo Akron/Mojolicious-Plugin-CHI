@@ -93,7 +93,7 @@ Mojolicious::Plugin::CHI - Use CHI caches within Mojolicious
       root_dir   => '/cache',
       cache_size => '20m'
     }
-  );
+  });
 
   # Mojolicious::Lite
   plugin 'CHI' => {
