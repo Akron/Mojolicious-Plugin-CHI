@@ -2,7 +2,7 @@ package Mojolicious::Plugin::CHI;
 use Mojo::Base 'Mojolicious::Plugin';
 use CHI;
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 # Register Plugin
 sub register {
@@ -69,6 +69,10 @@ sub register {
     chi => sub {
       my $c = shift;
       my $name = shift // 'default';
+
+      # Start Mojo::IOLoop if it's not already started
+      Mojo::IOLoop->start unless Mojo::IOLoop->is_running;
+
       my $cache = $caches->{$name};
 
       # Database unknown
