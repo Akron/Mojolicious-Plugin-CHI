@@ -14,54 +14,34 @@ sub register {
   };
 
   # Hash of cache handles
-  my $caches;
-
-  # No databases attached
-  unless ($mojo->can('chi_handles')) {
-    $caches = {};
-    $mojo->attr(
-      chi_handles => sub {
-	return $caches;
-      });
-  }
-
-  # Use attached databases
-  else {
-    $caches = $mojo->chi_handles;
-  };
+  my $caches = {};
 
   # Support namespaces
   my $ns = delete $param->{namespaces};
 
-  # Init caches (on fork)
-  Mojo::IOLoop->timer(
-    0 => sub {
+  # Loop through all caches
+  foreach my $name (keys %$param) {
+    my $cache_param = $param->{$name};
 
-      # Loop through all caches
-      foreach my $name (keys %$param) {
-	my $cache_param = $param->{$name};
+    # Already exists
+    next if exists $caches->{$name};
 
-	# Already exists
-	next if exists $caches->{$name};
+    # Set namespace
+    if ($ns) {
+      $cache_param->{namespace} //= $name unless $name eq 'default';
+    };
 
-	# Set namespace
-	if ($ns) {
-	  $cache_param->{namespace} //= $name unless $name eq 'default';
-	};
+    # Get CHI handle
+    my $cache = CHI->new( %$cache_param );
 
-	# Get Database handle
-	my $cache = CHI->new( %$cache_param );
+    # No succesful creation
+    unless ($cache) {
+      $mojo->log->warn("Unable to create cache handle '$name'");
+    };
 
-	# No succesful creation
-	unless ($cache) {
-	  $mojo->log->warn("Unable to create cache handle '$name'");
-	};
-
-	# Store database handle
-	$caches->{$name} = $cache;
-      };
-    }
-  );
+    # Store CHI handle
+    $caches->{$name} = $cache;
+  };
 
 
   # Add 'chi' helper
@@ -70,12 +50,9 @@ sub register {
       my $c = shift;
       my $name = shift // 'default';
 
-      # Start Mojo::IOLoop if it's not already started
-      Mojo::IOLoop->start unless Mojo::IOLoop->is_running;
-
       my $cache = $caches->{$name};
 
-      # Database unknown
+      # Cache unknown
       $mojo->log->warn("Unknown cache handle '$name'") unless $cache;
 
       # Return cache
@@ -211,6 +188,7 @@ environment.
 
 Boris Däppen (borisdaeppen)
 
+reneeb
 
 =head1 AVAILABILITY
 
