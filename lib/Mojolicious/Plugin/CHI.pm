@@ -72,7 +72,7 @@ __END__
 
 =head1 NAME
 
-Mojolicious::Plugin::CHI - Use CHI caches within Mojolicious
+Mojolicious::Plugin::CHI - Use CHI caches in Mojolicious
 
 
 =head1 SYNOPSIS
