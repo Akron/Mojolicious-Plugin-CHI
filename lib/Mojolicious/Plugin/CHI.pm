@@ -111,7 +111,7 @@ L<CHI> caches within Mojolicious.
 
 =head1 METHODS
 
-=head2 C<register>
+=head2 register
 
   # Mojolicious
   $app->plugin(CHI => {
@@ -161,7 +161,7 @@ to a true value.
 
 =head1 HELPERS
 
-=head2 C<chi>
+=head2 chi
 
   # In Controllers:
   $c->chi('MyCache')->set(my_key => 'This is my value', '10 min');
