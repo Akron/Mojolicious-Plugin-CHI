@@ -17,7 +17,7 @@ sub register {
   my $caches = {};
 
   # Support namespaces
-  my $ns = delete $param->{namespaces};
+  my $ns = delete $param->{namespaces} // 1;
 
   # Loop through all caches
   foreach my $name (keys %$param) {
@@ -124,7 +124,7 @@ L<CHI> caches within Mojolicious.
       driver => 'Memory',
       global => 1
     },
-    namespaces => 1
+    namespaces => 0
   });
 
   # Mojolicious::Lite
@@ -145,18 +145,16 @@ L<CHI> caches within Mojolicious.
 Called when registering the plugin.
 On creation, the plugin accepts a hash of cache names
 associated with L<CHI> objects.
-In addition to that, you can make all cache handles
-qualified L<CHI> namespaces by setting the C<namespaces> parameter
-to a true value.
+
+All cache handles are qualified L<CHI> namespaces.
+You can omit this mapping by passing a C<namespaces>
+parameter with a false value.
 
 All parameters can be set either on registration or
 as part of the configuration file with the key C<CHI>.
 
-B<Note:> Currently, the C<namespaces> flag is off by default
-and cache handles are independent from namespaces.
-This will change in an upcoming release.
-To prevent cache rebuilding in the future, set C<namespaces>
-to a true value.
+B<Note:> In a former release, the C<namespaces> flag was
+off by default.
 
 
 =head1 HELPERS
@@ -186,9 +184,10 @@ environment.
 
 =head1 CONTRIBUTORS
 
-Boris Däppen (borisdaeppen)
+L<Boris Däppen|https://github.com/borisdaeppen>
 
-reneeb
+L<reneeb|https://github.com/reneeb>
+
 
 =head1 AVAILABILITY
 
