@@ -124,7 +124,7 @@ L<CHI> caches within Mojolicious.
       driver => 'Memory',
       global => 1
     },
-    namespaces => 0
+    namespaces => 1
   });
 
   # Mojolicious::Lite
@@ -152,9 +152,6 @@ parameter with a false value.
 
 All parameters can be set either on registration or
 as part of the configuration file with the key C<CHI>.
-
-B<Note:> In a former release, the C<namespaces> flag was
-off by default.
 
 
 =head1 HELPERS
