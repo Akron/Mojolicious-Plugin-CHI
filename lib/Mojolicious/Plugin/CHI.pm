@@ -150,6 +150,10 @@ All cache handles are qualified L<CHI> namespaces.
 You can omit this mapping by passing a C<namespaces>
 parameter with a false value.
 
+The handles have to be unique, i.e.
+you can't have multiple different C<default> caches in mounted
+applications using L<Mojolicious::Plugin::Mount>.
+
 All parameters can be set either on registration or
 as part of the configuration file with the key C<CHI>.
 
