@@ -24,7 +24,10 @@ sub register {
     my $cache_param = $param->{$name};
 
     # Already exists
-    next if exists $caches->{$name};
+    if (exists $caches->{$name}) {
+      $mojo->log->warn("Multiple attempts to establish cache '$name'");
+      next;
+    };
 
     # Set namespace
     if ($ns) {

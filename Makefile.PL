@@ -5,13 +5,16 @@ use warnings;
 use ExtUtils::MakeMaker;
 
 WriteMakefile(
-  VERSION_FROM => 'lib/Mojolicious/Plugin/CHI.pm',
   NAME         => 'Mojolicious::Plugin::CHI',
+  VERSION_FROM => 'lib/Mojolicious/Plugin/CHI.pm',
+  ABSTRACT     => 'Use CHI caches in Mojolicious',
   AUTHOR       => 'Nils Diewald',
+  BUILD_REQUIRES => {
+    'Test::More' => 0
+  },
   PREREQ_PM => {
     'Mojolicious' => 3.43,
-    'Test::More' => 0,
-    CHI => 0
+    'CHI'         => 0
   },
   LICENSE      => 'perl',
   META_MERGE   => {
@@ -21,5 +24,6 @@ WriteMakefile(
       repository  => 'https://github.com/Akron/Mojolicious-Plugin-CHI'
     }
   },
-  test => {TESTS => 't/*.t t/*/*.t t/*/*/*.t t/*/*/*/*.t'}
+  MIN_PERL_VERSION => '5.010001',
+  test => {TESTS => 't/*.t'}
 );
