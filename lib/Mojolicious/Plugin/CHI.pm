@@ -151,7 +151,7 @@ associated with L<CHI> objects.
 
 All cache handles are qualified L<CHI> namespaces.
 You can omit this mapping by passing a C<namespaces>
-parameter with a false value.
+parameter with a C<false> value.
 
 The handles have to be unique, i.e.
 you can't have multiple different C<default> caches in mounted
