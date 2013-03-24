@@ -14,7 +14,22 @@ sub register {
   };
 
   # Hash of cache handles
-  my $caches = {};
+  my $caches;
+
+  # No caches attached
+  unless ($mojo->can('chi_handles')) {
+    $caches = {};
+
+    $mojo->attr(
+      chi_handles => sub {
+	return $caches;
+      }
+    );
+  }
+
+  else {
+    $caches = $mojo->chi_handles;
+  };
 
   # Support namespaces
   my $ns = delete $param->{namespaces} // 1;
