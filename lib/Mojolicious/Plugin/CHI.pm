@@ -8,6 +8,9 @@ our $VERSION = '0.06';
 sub register {
   my ($plugin, $mojo, $param) = @_;
 
+  # Add 'chi' command
+  push @{$mojo->commands->namespaces}, __PACKAGE__;
+
   # Load parameter from Config file
   if (my $config_param = $mojo->config('CHI')) {
     $param = { %$config_param, %$param };
@@ -189,6 +192,40 @@ Returns a L<CHI> handle if registered.
 Accepts the name of the registered cache.
 If no cache handle name is given, a cache handle name
 C<default> is assumed.
+
+
+=head1 COMMANDS
+
+=head2 chi list
+
+  perl app.pl chi list
+
+List all chi caches associated with your application.
+
+=head2 chi purge
+
+  perl app.pl chi purge 'mycache'
+
+Remove all expired entries from the cache namespace.
+
+=head2 chi clear
+
+  perl app.pl chi clear 'mycache'
+
+Remove all entries from the cache namespace.
+
+=head2 chi expire
+
+  perl app.pl chi expire 'mycache' 'mykey'
+
+Set the expiration date of a key to the past.
+This does not necessarily delete the data.
+
+=head2 chi remove
+
+  perl app.pl chi remove 'mycache' 'mykey'
+
+Remove a key from the cache.
 
 
 =head1 DEPENDENCIES
