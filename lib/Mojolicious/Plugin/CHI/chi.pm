@@ -63,8 +63,9 @@ sub run {
     when ('list') {
       my $caches = $app->can('chi_handles') ? $app->chi_handles : {};
       foreach (keys %$caches) {
-	print $_, '=', ($caches->{$_}->driver || '[UNKNOWN]'), "\n";
+	printf("  %-16s %-20s\n", $_, ($caches->{$_}->{driver_class} || '[UNKNOWN]'));
       };
+      return 1;
     }
 
     # Purge or clear a cache

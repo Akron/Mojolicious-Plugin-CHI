@@ -19,10 +19,8 @@ sub register {
   # Hash of cache handles
   my $caches;
 
-  # No caches attached
+  # Add 'chi_handles' attribute
   unless ($mojo->can('chi_handles')) {
-    $caches = {};
-
     $mojo->attr(
       chi_handles => sub {
 	return $caches;
@@ -31,7 +29,7 @@ sub register {
   }
 
   else {
-    $caches = $mojo->chi_handles;
+    $mojo->chi_handles($caches);
   };
 
   # Support namespaces
