@@ -77,6 +77,45 @@ sub register {
       # Return cache
       return $cache;
     });
+
+  # Add 'chi_ua' helper
+  $mojo->helper(
+    chi_ua => sub {
+      shift;
+      my $ua = Mojo::UserAgent->new;
+      # ...
+    }
+  );
+
+  # Add 'chi' shortcut
+  $mojo->routes->add_shortcut(
+    chi => sub {
+      my $r = shift;
+      my %param = @_;
+
+      # Add bridge
+      # Generate E-Tag
+      # - Render from cache, if existing
+      # - Support full path
+      # - Support param
+      # - Support chosen headers
+      # otherwise
+      # - Add E-Tag
+      # - Add X-Cache-Header
+
+      # If shortcut once established,
+      # add hook for Caching
+      # Save Response based on E-Tag
+
+      # ->chi(default => {
+      #    header => ['Session'],
+      #    session => []}
+      # )->to()
+      # Or
+      # ->chi_to(cb => sub {}, chi => {})
+      # This would only work, if this is an endpoint
+    }
+  );
 };
 
 
