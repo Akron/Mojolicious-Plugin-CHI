@@ -127,7 +127,7 @@ sub register {
 
       # How about: expires, e-tag, if-modified-since
 
-
+      # Use MOJO_USERAGENT_DEBUG
 
       # Information:
       # - no_cache_if => sub { ... }
