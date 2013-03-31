@@ -2,7 +2,7 @@ package Mojolicious::Plugin::CHI;
 use Mojo::Base 'Mojolicious::Plugin';
 use CHI;
 
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 # Register Plugin
 sub register {
@@ -83,6 +83,73 @@ sub register {
     chi_ua => sub {
       shift;
       my $ua = Mojo::UserAgent->new;
+      my %param = @_;
+
+      # LWP::UserAgent::Cached
+      # LWP::UserAgent::Cache::Memcached
+      # LWP::UserAgent::WithCache
+
+      my $support;
+      my $headers = $c->req->headers;
+      if ($param{with}) {
+	foreach (sort cmp @{$param{with}}) {
+	  $support .= $_  ': ' . $headers->{$_} . "\n" if exists $headers->{$_};
+	};
+      }
+      elsif ($param{without}) {
+	$headers = $headers->clone;
+	foreach (@{$param{without}}) {
+	  delete $headers->{$_};
+	};
+	foreach (sort cmp keys %{$headers}) {
+	  $support .= $_  ': ' . $headers->{$_} . "\n";
+	};
+      };
+
+      # Method
+      # URL
+      # Param (sorted)
+
+      # Do not cache in case of accept_ranges
+
+      # Session is in Cookie
+      # Default support:
+      # accept
+      # accept_charset
+      # accept_encoding
+      # accept_language
+      # accept_ranges
+      # transfer_encoding
+
+      # Without:
+      # date
+      # dnt
+
+      # How about: expires, e-tag, if-modified-since
+
+
+
+      # Information:
+      # - no_cache_if => sub { ... }
+      # - recache_if => sub { ... }
+      # - on_uncached => sub { ... }
+
+      my $seconds;
+
+      # Get information from cache_control
+      if (my $age = $headers->cache_control) {
+	if ($age =~ s/max-age\s*(\d+)/$1/i) {
+	  $seconds = $age;
+	};
+      }
+
+      # Get information from expires header
+      elsif (my $expires = $headers->expires) {
+	if ($expires = Mojo::Date->new($expires)) {
+	  $seconds = $expires - time;
+	}
+      };
+
       # ...
     }
   );
