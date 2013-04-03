@@ -4,8 +4,6 @@ use Test::More tests => 17;
 use Test::Mojo;
 use File::Temp qw/:POSIX tempdir/;
 
-$|++;
-
 use lib 'lib';
 use lib '../lib';
 
