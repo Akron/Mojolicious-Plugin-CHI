@@ -1,17 +1,15 @@
 package Mojolicious::Plugin::CHI;
 use Mojo::Base 'Mojolicious::Plugin';
+use Scalar::Util 'weaken';
 use CHI;
 
-our $VERSION = '0.06';
+our $VERSION = '0.08_3';
 
 # Register Plugin
 sub register {
   my ($plugin, $mojo, $param) = @_;
 
-  # Add 'chi' command
-  push @{$mojo->commands->namespaces}, __PACKAGE__;
-
-  # Load parameter from Config file
+  # Load parameter from config file
   if (my $config_param = $mojo->config('CHI')) {
     $param = { %$config_param, %$param };
   };
@@ -19,23 +17,31 @@ sub register {
   # Hash of cache handles
   my $caches;
 
-  # No caches attached
+  # Add 'chi_handles' attribute
+  # Necessary for multiple cache registrations
   unless ($mojo->can('chi_handles')) {
-    $caches = {};
-
     $mojo->attr(
       chi_handles => sub {
-	return $caches;
+	return ($caches //= {});
       }
     );
   }
 
+  # Get caches from application
   else {
     $caches = $mojo->chi_handles;
   };
 
+
   # Support namespaces
   my $ns = delete $param->{namespaces} // 1;
+
+  # Create log callback for CHI Logging
+  my $log = $mojo->log;
+  weaken $log;
+  my $log_ref = sub {
+    $log->warn( shift ) if defined $log;
+  };
 
   # Loop through all caches
   foreach my $name (keys %$param) {
@@ -43,7 +49,7 @@ sub register {
 
     # Already exists
     if (exists $caches->{$name}) {
-      $mojo->log->warn("Multiple attempts to establish cache '$name'");
+      $mojo->log->warn(qq{Multiple attempts to establish cache "$name"});
       next;
     };
 
@@ -53,16 +59,24 @@ sub register {
     };
 
     # Get CHI handle
-    my $cache = CHI->new( %$cache_param );
+    my $cache = CHI->new(
+
+      # Set logging routines
+      on_get_error => $log_ref,
+      on_set_error => $log_ref,
+
+      %$cache_param
+    );
 
     # No succesful creation
-    unless ($cache) {
-      $mojo->log->warn("Unable to create cache handle '$name'");
-    };
+    $mojo->log->warn(qq{Unable to create cache handle "$name"}) unless $cache;
 
     # Store CHI handle
     $caches->{$name} = $cache;
   };
+
+  # Add 'chi' command
+  push @{$mojo->commands->namespaces}, __PACKAGE__;
 
 
   # Add 'chi' helper
@@ -74,11 +88,12 @@ sub register {
       my $cache = $caches->{$name};
 
       # Cache unknown
-      $mojo->log->warn("Unknown cache handle '$name'") unless $cache;
+      $c->app->log->warn(qq{Unknown cache handle "$name"}) unless $cache;
 
       # Return cache
       return $cache;
-    });
+    }
+  );
 };
 
 
@@ -93,7 +108,7 @@ __END__
 
 =head1 NAME
 
-Mojolicious::Plugin::CHI - Use CHI caches in Mojolicious
+Mojolicious::Plugin::CHI - Use CHI Caches in Mojolicious
 
 
 =head1 SYNOPSIS
@@ -166,14 +181,15 @@ L<CHI> caches within Mojolicious.
 Called when registering the plugin.
 On creation, the plugin accepts a hash of cache names
 associated with L<CHI> objects.
-
 All cache handles are qualified L<CHI> namespaces.
 You can omit this mapping by passing a C<namespaces>
 parameter with a C<false> value.
-
 The handles have to be unique, i.e.
 you can't have multiple different C<default> caches in mounted
 applications using L<Mojolicious::Plugin::Mount>.
+Logging defaults to the application log, but can be
+overridden using L<on_get_error|CHI/CONSTRUCTOR> and
+L<on_set_error|CHI/CONSTRUCTOR>.
 
 All parameters can be set either on registration or
 as part of the configuration file with the key C<CHI>.
@@ -196,36 +212,47 @@ C<default> is assumed.
 
 =head1 COMMANDS
 
+The following commands are available
+when the plugin is registered.
+
 =head2 chi list
 
   perl app.pl chi list
 
-List all chi caches associated with your application.
+List all CHI caches associated with your application.
+
 
 =head2 chi purge
 
-  perl app.pl chi purge 'mycache'
+  perl app.pl chi purge mycache
 
 Remove all expired entries from the cache namespace.
 
+
 =head2 chi clear
 
-  perl app.pl chi clear 'mycache'
+  perl app.pl chi clear mycache
 
 Remove all entries from the cache namespace.
 
+
 =head2 chi expire
 
-  perl app.pl chi expire 'mycache' 'mykey'
+  perl app.pl chi expire mykey
+  perl app.pl chi expire mycache mykey
 
 Set the expiration date of a key to the past.
-This does not necessarily delete the data.
+This does not necessarily delete the data,
+but makes it unavailable using C<get>.
+
 
 =head2 chi remove
 
-  perl app.pl chi remove 'mycache' 'mykey'
+  perl app.pl chi remove mykey
+  perl app.pl chi remove mycache mykey
 
 Remove a key from the cache.
+
 
 
 =head1 DEPENDENCIES
@@ -233,16 +260,17 @@ Remove a key from the cache.
 L<Mojolicious>,
 L<CHI>.
 
-B<Note:> L<CHI> has a lot of dependencies. It is
-thus not recommended to use this plugin in a CGI
-environment.
+B<Note:> Old versions of L<CHI> had a lot of dependencies.
+It was thus not recommended to use this plugin in a CGI
+environment. Since new versions of CHI use L<Moo> instead of
+L<Moose>, more use cases may be possible.
 
 
 =head1 CONTRIBUTORS
 
 L<Boris Däppen|https://github.com/borisdaeppen>
 
-L<reneeb|https://github.com/reneeb>
+L<Renée Bäcker|https://github.com/reneeb>
 
 
 =head1 AVAILABILITY
@@ -252,9 +280,9 @@ L<reneeb|https://github.com/reneeb>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2012-2013, L<Nils Diewald|http://nils-diewald.de/>.
+Copyright (C) 2012-2014, L<Nils Diewald|http://nils-diewald.de/>.
 
 This program is free software, you can redistribute it
-and/or modify it under the same terms as Perl.
+and/or modify it under the terms of the Artistic License version 2.0.
 
 =cut

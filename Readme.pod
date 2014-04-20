@@ -4,7 +4,7 @@
 
 =head1 NAME
 
-Mojolicious::Plugin::CHI - Use CHI caches in Mojolicious
+Mojolicious::Plugin::CHI - Use CHI Caches in Mojolicious
 
 
 =head1 SYNOPSIS
@@ -89,6 +89,10 @@ applications using L<Mojolicious::Plugin::Mount>.
 All parameters can be set either on registration or
 as part of the configuration file with the key C<CHI>.
 
+Logging defaults to the application log, but can be
+overridden using L<on_get_error|CHI/on_get_error> and
+L<on_set_error|CHI/on_set_error>.
+
 
 =head1 HELPERS
 
@@ -107,36 +111,47 @@ C<default> is assumed.
 
 =head1 COMMANDS
 
+The following commands are available
+when the plugin is registered.
+
 =head2 chi list
 
   perl app.pl chi list
 
-List all chi caches associated with your application.
+List all CHI caches associated with your application.
+
 
 =head2 chi purge
 
-  perl app.pl chi purge 'mycache'
+  perl app.pl chi purge mycache
 
 Remove all expired entries from the cache namespace.
 
+
 =head2 chi clear
 
-  perl app.pl chi clear 'mycache'
+  perl app.pl chi clear mycache
 
 Remove all entries from the cache namespace.
 
+
 =head2 chi expire
 
-  perl app.pl chi expire 'mycache' 'mykey'
+  perl app.pl chi expire mykey
+  perl app.pl chi expire mycache mykey
 
 Set the expiration date of a key to the past.
-This does not necessarily delete the data.
+This does not necessarily delete the data,
+but makes it unavailable using L</get>.
+
 
 =head2 chi remove
 
-  perl app.pl chi remove 'mycache' 'mykey'
+  perl app.pl chi remove mykey
+  perl app.pl chi remove mycache mykey
 
 Remove a key from the cache.
+
 
 
 =head1 DEPENDENCIES
@@ -144,16 +159,17 @@ Remove a key from the cache.
 L<Mojolicious>,
 L<CHI>.
 
-B<Note:> L<CHI> has a lot of dependencies. It is
-thus not recommended to use this plugin in a CGI
-environment.
+B<Note:> Old versions of L<CHI> had a lot of dependencies.
+It was thus not recommended to use this plugin in a CGI
+environment. Since new versions of CHI use L<Moo> instead of
+L<Moose>, more use cases may be possible.
 
 
 =head1 CONTRIBUTORS
 
 L<Boris Däppen|https://github.com/borisdaeppen>
 
-L<reneeb|https://github.com/reneeb>
+L<Renée Bäcker|https://github.com/reneeb>
 
 
 =head1 AVAILABILITY
@@ -163,9 +179,9 @@ L<reneeb|https://github.com/reneeb>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2012-2013, L<Nils Diewald|http://nils-diewald.de/>.
+Copyright (C) 2012-2014, L<Nils Diewald|http://nils-diewald.de/>.
 
 This program is free software, you can redistribute it
-and/or modify it under the same terms as Perl.
+and/or modify it under the terms of the Artistic License version 2.0.
 
 =cut

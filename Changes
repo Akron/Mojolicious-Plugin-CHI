@@ -1,3 +1,13 @@
+0.08 2014-04-17
+        - Logging now defaults to application log.
+	- Update requirements.
+	- Added commands.
+
+0.07 2014-04-01
+        - Update year.
+	- Documentation tweaks on CHI.
+	- Fixed License issue (now coherent Artistic License 2.0; max).
+
 0.06 2013-03-08
         - Update year.
 	- Update description.
