@@ -77,21 +77,18 @@ L<CHI> caches within Mojolicious.
 Called when registering the plugin.
 On creation, the plugin accepts a hash of cache names
 associated with L<CHI> objects.
-
 All cache handles are qualified L<CHI> namespaces.
 You can omit this mapping by passing a C<namespaces>
 parameter with a C<false> value.
-
 The handles have to be unique, i.e.
 you can't have multiple different C<default> caches in mounted
 applications using L<Mojolicious::Plugin::Mount>.
+Logging defaults to the application log, but can be
+overridden using L<on_get_error|CHI/CONSTRUCTOR> and
+L<on_set_error|CHI/CONSTRUCTOR>.
 
 All parameters can be set either on registration or
 as part of the configuration file with the key C<CHI>.
-
-Logging defaults to the application log, but can be
-overridden using L<on_get_error|CHI/on_get_error> and
-L<on_set_error|CHI/on_set_error>.
 
 
 =head1 HELPERS
@@ -142,7 +139,7 @@ Remove all entries from the cache namespace.
 
 Set the expiration date of a key to the past.
 This does not necessarily delete the data,
-but makes it unavailable using L</get>.
+but makes it unavailable using C<get>.
 
 
 =head2 chi remove
