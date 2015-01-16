@@ -1,11 +1,15 @@
 package Mojolicious::Plugin::CHI::chi;
 use Mojo::Base 'Mojolicious::Command';
-use Mojo::Util 'tablify';
+use Mojo::Util qw/tablify quote/;
 
 use Getopt::Long qw/GetOptions :config no_auto_abbrev no_ignore_case/;
 
 has description => 'Interact with CHI caches.';
 has usage       => sub { shift->extract_usage };
+
+sub _unknown {
+  return 'Cache ' . quote($_[0]) . " is unknown.\n\n"
+};
 
 # Run chi
 sub run {
@@ -36,6 +40,9 @@ sub run {
 
     my $chi = $app->chi($cache);
 
+    # Cache is unknown
+    print _unknown($cache) and return unless $chi;
+
     # Do not modify non-persistant in-process caches!
     if ($chi->short_driver_name =~ /^(?:Raw)?Memory$/) {
       $log->warn("You are trying to $command a ".
@@ -60,6 +67,9 @@ sub run {
     if ($key) {
 
       my $chi = $app->chi($cache);
+
+      # Cache is unknown
+      print _unknown($cache) and return unless $chi;;
 
       # Do not modify non-persistant in-process caches!
       if ($chi->short_driver_name =~ /^(?:Raw)?Memory$/) {

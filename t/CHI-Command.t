@@ -92,6 +92,12 @@ ok(!$flat_file->get('key_2'), 'Get key impossible');
 ok($flat_file->get_object('key_2')->is_expired, 'Key is expired');
 
 stdout_is(
+  sub { $chi->run('purge', 'Unknown') },
+  "Cache \"Unknown\" is unknown.\n\n",
+  'Purge cache'
+);
+
+stdout_is(
   sub { $chi->run('purge', 'MyFlatFile') },
   "Cache \"MyFlatFile\" was purged.\n\n",
   'Purge cache'
@@ -99,6 +105,12 @@ stdout_is(
 
 ok(!$flat_file->get_object('key_2'), 'Key is removed');
 is($flat_file->get('key_1'), 'value_1', 'Get key');
+
+stdout_is(
+  sub { $chi->run('clear', 'Unknown') },
+  "Cache \"Unknown\" is unknown.\n\n",
+  'Clear cache'
+);
 
 stdout_is(
   sub { $chi->run('clear', 'MyFlatFile') },
@@ -114,6 +126,12 @@ is($flat_file->get('key_3'), 'value_3', 'Get key');
 is($flat_file->get('key_4'), 'value_4', 'Get key');
 
 stdout_is(
+  sub { $chi->run('remove', 'Unknown', 'key') },
+  "Cache \"Unknown\" is unknown.\n\n",
+  'Remove key'
+);
+
+stdout_is(
   sub { $chi->run('remove', 'MyFlatFile', 'key_3') },
   "Key \"key_3\" from cache \"MyFlatFile\" was removed.\n\n",
   'Remove key'
@@ -121,6 +139,12 @@ stdout_is(
 ok(!$flat_file->get('key_3'), 'Get key');
 
 is($flat_file->get('key_4'), 'value_4', 'Get key');
+
+stdout_is(
+  sub { $chi->run('expire', 'Unknown', 'key') },
+  "Cache \"Unknown\" is unknown.\n\n",
+  'Expire key'
+);
 
 stdout_is(
   sub { $chi->run('expire', 'MyFlatFile', 'key_4') },
