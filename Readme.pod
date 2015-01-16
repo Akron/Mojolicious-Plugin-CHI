@@ -87,8 +87,9 @@ Logging defaults to the application log, but can be
 overridden using L<on_get_error|CHI/CONSTRUCTOR> and
 L<on_set_error|CHI/CONSTRUCTOR>.
 
-All parameters can be set either on registration or
-as part of the configuration file with the key C<CHI>.
+All parameters can be set as part of the configuration
+file with the key C<CHI> or on registration
+(that can be overwritten by configuration).
 
 
 =head1 HELPERS

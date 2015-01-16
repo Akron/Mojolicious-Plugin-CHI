@@ -1,3 +1,9 @@
+0.10 2015-01-16
+        - Improve documentation regarding precedence of configuration.
+	- Improve config check.
+	- Improve license information in M::P::CHI::chi.
+	- Update year.
+
 0.09 2014-04-20
         - Bugfix test suite.
 

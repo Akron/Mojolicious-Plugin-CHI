@@ -3,7 +3,7 @@ use Mojo::Base 'Mojolicious::Plugin';
 use Scalar::Util 'weaken';
 use CHI;
 
-our $VERSION = '0.09';
+our $VERSION = '0.10';
 
 # Register Plugin
 sub register {
@@ -11,7 +11,7 @@ sub register {
 
   # Load parameter from config file
   if (my $config_param = $mojo->config('CHI')) {
-    $param = { %$config_param, %$param };
+    $param = { %$param, %$config_param };
   };
 
   # Hash of cache handles
@@ -46,6 +46,8 @@ sub register {
   # Loop through all caches
   foreach my $name (keys %$param) {
     my $cache_param = $param->{$name};
+
+    next unless ref $cache_param && ref $cache_param eq 'HASH';
 
     # Already exists
     if (exists $caches->{$name}) {
@@ -191,8 +193,9 @@ Logging defaults to the application log, but can be
 overridden using L<on_get_error|CHI/CONSTRUCTOR> and
 L<on_set_error|CHI/CONSTRUCTOR>.
 
-All parameters can be set either on registration or
-as part of the configuration file with the key C<CHI>.
+All parameters can be set as part of the configuration
+file with the key C<CHI> or on registration
+(that can be overwritten by configuration).
 
 
 =head1 HELPERS
@@ -280,7 +283,7 @@ L<Renée Bäcker|https://github.com/reneeb>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2012-2014, L<Nils Diewald|http://nils-diewald.de/>.
+Copyright (C) 2012-2015, L<Nils Diewald|http://nils-diewald.de/>.
 
 This program is free software, you can redistribute it
 and/or modify it under the terms of the Artistic License version 2.0.
