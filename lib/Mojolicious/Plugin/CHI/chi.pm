@@ -8,7 +8,7 @@ has description => 'Interact with CHI caches.';
 has usage       => sub { shift->extract_usage };
 
 sub _unknown {
-  return 'Cache ' . quote($_[0]) . " is unknown.\n\n"
+  return 'Unknown cache handle ' . quote($_[0]) . ".\n\n"
 };
 
 # Run chi
