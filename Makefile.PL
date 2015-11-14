@@ -15,7 +15,7 @@ WriteMakefile(
   },
   PREREQ_PM => {
     'Mojolicious' => 4.77,
-    'CHI'         => 0
+    'CHI'         => 0.58
   },
   LICENSE      => 'artistic_2',
   META_MERGE   => {

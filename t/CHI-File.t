@@ -99,11 +99,13 @@ ok($my_cache, 'CHI handle');
 ok($my_cache->set(key_1 => 'Wert 1'), 'Wert 1');
 is($my_cache->get('key_1'), 'Wert 1', 'Wert 1');
 
+my %hash;
 opendir(D, $path);
-@test = readdir(D);
+$hash{$_} = 1 foreach readdir(D);
 closedir(D);
 
+
 # Default namespace
-ok('Default' ~~ \@test, 'Namespace option valid');
+ok($hash{'Default'}, 'Namespace option valid');
 
 done_testing;
