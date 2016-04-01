@@ -204,7 +204,7 @@ L<CHI>.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2013-2015, L<Nils Diewald||http://nils-diewald.de>.
+Copyright (C) 2013-2016, L<Nils Diewald||http://nils-diewald.de>.
 
 This program is free software, you can redistribute it
 and/or modify it under the terms of the Artistic License version 2.0.

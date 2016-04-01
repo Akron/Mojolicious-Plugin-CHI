@@ -1,3 +1,8 @@
+0.13 2016-04-01
+        - Added dependency of Digest::JHash,
+ 	  as there seem to be broken builds of CHI out there
+	  (dependencies in CHI are correkt; cpantesters).
+
 0.12 2015-11-14
         - Removed smartmatch in tests.
 	- Made dependencies more concrete.

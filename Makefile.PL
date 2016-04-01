@@ -15,16 +15,27 @@ WriteMakefile(
   },
   PREREQ_PM => {
     'Mojolicious' => 4.77,
-    'CHI'         => 0.58
+    'CHI'         => 0.58,
+    # Already a dep of CHI, but some perltesters failed
+    'Digest::JHash' => 0.05
   },
   LICENSE      => 'artistic_2',
-  META_MERGE   => {
-    requires  => {perl => '5.010001'},
+  (eval { ExtUtils::MakeMaker->VERSION(6.46) } ? (META_MERGE => {
+    'meta-spec' => { version => 2 },
+    requires  => { perl => '5.010001' },
     resources => {
       license     => 'http://www.opensource.org/licenses/artistic-license-2.0',
-      repository  => 'https://github.com/Akron/Mojolicious-Plugin-CHI'
+      repository  => {
+        type => 'git',
+        web => 'https://github.com/Akron/XML-Loy',
+        url => 'https://github.com/Akron/XML-Loy.git',
+      },
+      bugtracker  => {
+        web => 'https://github.com/Akron/XML-Loy/issues',
+      },
     }
-  },
+  }) : (),
+  ),
   MIN_PERL_VERSION => '5.010001',
   test => {TESTS => 't/*.t'}
 );
