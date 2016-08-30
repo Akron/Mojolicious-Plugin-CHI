@@ -27,11 +27,11 @@ WriteMakefile(
       license     => 'http://www.opensource.org/licenses/artistic-license-2.0',
       repository  => {
         type => 'git',
-        web => 'https://github.com/Akron/XML-Loy',
-        url => 'https://github.com/Akron/XML-Loy.git',
+        web => 'https://github.com/Akron/Mojolicious-Plugin-CHI',
+        url => 'https://github.com/Akron/Mojolicious-Plugin-CHI.git',
       },
       bugtracker  => {
-        web => 'https://github.com/Akron/XML-Loy/issues',
+        web => 'https://github.com/Akron/Mojolicious-Plugin-CHI/issues',
       },
     }
   }) : (),

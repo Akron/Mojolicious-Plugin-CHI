@@ -3,7 +3,7 @@ use Mojo::Base 'Mojolicious::Plugin';
 use Scalar::Util 'weaken';
 use CHI;
 
-our $VERSION = '0.13';
+our $VERSION = '0.14';
 
 # Register Plugin
 sub register {
@@ -22,7 +22,7 @@ sub register {
   unless ($mojo->can('chi_handles')) {
     $mojo->attr(
       chi_handles => sub {
-	return ($caches //= {});
+        return ($caches //= {});
       }
     );
   }

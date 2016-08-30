@@ -46,8 +46,8 @@ sub run {
     # Do not modify non-persistant in-process caches!
     if ($chi->short_driver_name =~ /^(?:Raw)?Memory$/) {
       $log->warn("You are trying to $command a ".
-		   $chi->short_driver_name .
-		     '-Cache');
+                   $chi->short_driver_name .
+                   '-Cache');
     };
 
     $chi->$command();
@@ -73,21 +73,21 @@ sub run {
 
       # Do not modify non-persistant in-process caches!
       if ($chi->short_driver_name =~ /^(?:Raw)?Memory$/) {
-	$log->warn("You are trying to $command " .
-		     'a key from a '.
-		       $chi->short_driver_name .
-			 '-Cache');
+        $log->warn("You are trying to $command " .
+                     'a key from a '.
+                     $chi->short_driver_name .
+                     '-Cache');
       };
 
       # Remove or expire key
       if ($chi->$command($key)) {
-	print qq{Key "$key" from cache "$cache" was } . $command . "d.\n\n";
+        print qq{Key "$key" from cache "$cache" was } . $command . "d.\n\n";
       }
 
       # Not successful
       else {
-	print 'Unable to ' . $command .
-	  qq{ key "$key" from cache "$cache".\n\n};
+        print 'Unable to ' . $command .
+          qq{ key "$key" from cache "$cache".\n\n};
       };
 
       return 1;
