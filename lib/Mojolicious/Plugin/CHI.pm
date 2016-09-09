@@ -3,7 +3,7 @@ use Mojo::Base 'Mojolicious::Plugin';
 use Scalar::Util 'weaken';
 use CHI;
 
-our $VERSION = '0.14';
+our $VERSION = '0.15';
 
 # Register Plugin
 sub register {
@@ -77,25 +77,28 @@ sub register {
     $caches->{$name} = $cache;
   };
 
-  # Add 'chi' command
-  push @{$mojo->commands->namespaces}, __PACKAGE__;
+  # Only establish once
+  unless (exists $mojo->renderer->helpers->{chi}) {
 
+    # Add 'chi' command
+    push @{$mojo->commands->namespaces}, __PACKAGE__;
 
-  # Add 'chi' helper
-  $mojo->helper(
-    chi => sub {
-      my $c = shift;
-      my $name = shift // 'default';
+    # Add 'chi' helper
+    $mojo->helper(
+      chi => sub {
+        my $c = shift;
+        my $name = shift // 'default';
 
-      my $cache = $caches->{$name};
+        my $cache = $caches->{$name};
 
-      # Cache unknown
-      $c->app->log->warn(qq{Unknown cache handle "$name"}) unless $cache;
+        # Cache unknown
+        $c->app->log->warn(qq{Unknown cache handle "$name"}) unless $cache;
 
-      # Return cache
-      return $cache;
-    }
-  );
+        # Return cache
+        return $cache;
+      }
+    );
+  };
 };
 
 

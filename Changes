@@ -1,3 +1,6 @@
+0.15 2016-09-09
+        - Fixed command namespace pushing to be limited.
+
 0.14 2016-08-30
         - Fixed META_MERGE in Makefile.
 

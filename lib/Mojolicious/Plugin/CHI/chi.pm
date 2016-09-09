@@ -4,7 +4,7 @@ use Mojo::Util qw/tablify quote/;
 
 use Getopt::Long qw/GetOptions :config no_auto_abbrev no_ignore_case/;
 
-has description => 'Interact with CHI caches.';
+has description => 'Interact with CHI caches';
 has usage       => sub { shift->extract_usage };
 
 sub _unknown {

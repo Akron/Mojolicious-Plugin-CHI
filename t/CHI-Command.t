@@ -2,7 +2,8 @@
 use Mojolicious::Lite;
 use Test::More;
 use Test::Mojo;
-use Test::Output;
+use Data::Dumper;
+use Test::Output qw/:stdout :stderr :functions/;
 use File::Temp qw/:POSIX tempdir/;
 
 use lib 'lib';
@@ -33,6 +34,25 @@ $app->plugin(Config => {
 
 $app->plugin('CHI');
 
+my $cmds = $app->commands;
+
+ok(grep/::CHI/, @{$cmds->namespaces}, 'Namespace is set');
+is_deeply(
+  $cmds->namespaces,
+  [qw/Mojolicious::Command Mojolicious::Plugin::CHI/],
+  'Namespace is set'
+);
+
+stdout_like(
+  sub {
+    local $ENV{HARNESS_ACTIVE} = 0;
+    $cmds->run;
+  },
+  qr/chi.+?Interact with CHI caches/,
+  'Command established'
+);
+
+
 {
   no warnings;
   $Time::Duration::MILLISECOND = 1;
@@ -43,7 +63,7 @@ use_ok('Mojolicious::Plugin::CHI::chi');
 my $chi = Mojolicious::Plugin::CHI::chi->new;
 $chi->app($app);
 
-is($chi->description, "Interact with CHI caches.", 'Description line');
+is($chi->description, "Interact with CHI caches", 'Description line');
 
 stdout_like(
   sub { $chi->run },
@@ -74,6 +94,14 @@ $app->plugin(CHI => {
     max_key_length => 200
   }
 });
+
+$cmds = $app->commands;
+is_deeply(
+  $cmds->namespaces,
+  [qw/Mojolicious::Command Mojolicious::Plugin::CHI/],
+  'Namespace is set only once'
+);
+
 
 stdout_like(
   sub { $chi->run('list') },
