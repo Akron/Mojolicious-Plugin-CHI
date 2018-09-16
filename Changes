@@ -1,3 +1,6 @@
+0.17 2018-09-16
+        - Fix tests for Mojolicious 8 compatibility.
+
 0.16 2016-10-29
         - Added Readme to MANIFEST.
 
