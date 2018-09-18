@@ -3,7 +3,7 @@ use Mojo::Base 'Mojolicious::Plugin';
 use Scalar::Util 'weaken';
 use CHI;
 
-our $VERSION = '0.17';
+our $VERSION = '0.18';
 
 # Register Plugin
 sub register {
@@ -32,8 +32,9 @@ sub register {
     $caches = $mojo->chi_handles;
   };
 
+  # Support classes
+  my $chi_class = delete $param->{chi_class} // 'CHI';
 
-  my $chi_class = delete $param->{chi_class} // "CHI";
   # Support namespaces
   my $ns = delete $param->{namespaces} // 1;
 
@@ -201,7 +202,7 @@ All parameters can be set as part of the configuration
 file with the key C<CHI> or on registration
 (that can be overwritten by configuration).
 
-Use custom CHI subclass by passing a C<chi_class>
+Use custom CHI subclasses by passing a C<chi_class>
 parameter with the class name of a CHI subclass.
 
 =head1 HELPERS
@@ -281,6 +282,7 @@ L<Boris Däppen|https://github.com/borisdaeppen>
 
 L<Renée Bäcker|https://github.com/reneeb>
 
+L<Rouzier|https://github.com/rouzier>
 
 =head1 AVAILABILITY
 

@@ -1,3 +1,6 @@
+0.18 2018-09-18
+        - Added support for CHI subclasses (rouzier++).
+
 0.17 2018-09-16
         - Fix tests for Mojolicious 8 compatibility.
 
