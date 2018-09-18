@@ -284,6 +284,9 @@ L<Renée Bäcker|https://github.com/reneeb>
 
 L<Rouzier|https://github.com/rouzier>
 
+L<Mohammad S Anwar|https://github.com/manwar>
+
+
 =head1 AVAILABILITY
 
   https://github.com/Akron/Mojolicious-Plugin-CHI
