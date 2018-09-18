@@ -33,6 +33,7 @@ sub register {
   };
 
 
+  my $chi_class = delete $param->{chi_class} // "CHI";
   # Support namespaces
   my $ns = delete $param->{namespaces} // 1;
 
@@ -61,7 +62,7 @@ sub register {
     };
 
     # Get CHI handle
-    my $cache = CHI->new(
+    my $cache = $chi_class->new(
 
       # Set logging routines
       on_get_error => $log_ref,
@@ -200,6 +201,8 @@ All parameters can be set as part of the configuration
 file with the key C<CHI> or on registration
 (that can be overwritten by configuration).
 
+Use custom CHI subclass by passing a C<chi_class>
+parameter with the class name of a CHI subclass.
 
 =head1 HELPERS
 
